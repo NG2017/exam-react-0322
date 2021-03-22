@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import LoadingMask from "./LoadingMask";
+
 
 export default function Form (props) {
 
     const [email, setEmail] = useState("");
+    const [stillLoading, setStillLoading] = useState(false);
 
 
 /*     useEffect(() => {
@@ -32,14 +35,19 @@ export default function Form (props) {
             console.log(email);
             let inputField = document.getElementById("email");
             let button = document.getElementById("button");
-            if (inputField.validity.typeMismatch) {
-                button.disabled = true;
+            if (inputField.validity.valid) {
+                button.disabled = false;
             } else {
-            button.disabled = false;
+            button.disabled = true;
             }
         }
 
       }, [email])
+
+
+      useEffect(()=> {
+        console.log("loading");
+      }, [stillLoading])  
 
     const sendInfo = () => {
   
@@ -48,6 +56,9 @@ export default function Form (props) {
     return (
       <div className="form">
         
+        { stillLoading ? <LoadingMask /> : ""}
+
+
         <label htmlFor="email">Enter your email:</label>
         <input
         id="email"
@@ -58,7 +69,7 @@ export default function Form (props) {
        />
 
 
-        <button id="button" onChange={() => sendInfo()} disabled>Send</button>
+        <button id="button" onClick={() => setStillLoading(true)} disabled>Send</button>
         
 
 
